@@ -42,15 +42,13 @@ script.on_event(defines.events.on_player_changed_position,
 
             local character = player.character
             local area_around_player = player.character.bounding_box
-            for _, v in pairs(player.surface.find_entities(area_around_player)) do
-                if string.find(v.name, 'belt') then
-                    if character.direction == v.direction and character.walking_state['walking']then
-                        disable_belt_immunity(player, player_armor.grid)
-                        break
-                    else
-                        enable_belt_immunity(player, player_armor.grid)
-                        break
-                    end
+            for _, v in pairs(player.surface.find_entities_filtered{area=area_around_player, type={'transport-belt', 'splitter'}}) do
+                if character.direction == v.direction and character.walking_state['walking']then
+                    disable_belt_immunity(player, player_armor.grid)
+                    break
+                else
+                    enable_belt_immunity(player, player_armor.grid)
+                    break
                 end
             end
         end
